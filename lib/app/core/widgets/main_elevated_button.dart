@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:plant_app/app/utils/colors_util.dart';
 
 class MainElevatedButton extends StatelessWidget {
-  const MainElevatedButton(
-      {super.key, required this.onPressed, required this.title});
+  const MainElevatedButton({
+    super.key,
+    required this.onPressed,
+    required this.title,
+    this.height = 48,
+    this.width = 218,
+  });
 
   final VoidCallback onPressed;
   final String title;
+  final double height;
+  final double width;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: 218,
-        height: 46,
+        width: width,
+        height: height,
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(

@@ -7,7 +7,7 @@ class VersionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Text(
       'V 1.0.0',
-      style: TextStyle(fontFamily: 'Comfortaa', fontSize: 16),
+      style: TextStyle(fontFamily: 'Comfortaa', fontSize: 12),
     );
   }
 }

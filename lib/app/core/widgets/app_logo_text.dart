@@ -15,9 +15,10 @@ class AppLogoText extends StatelessWidget {
         Text(
           "Plant",
           style: TextStyle(
+              height: 1,
               fontFamily: 'Comfortaa',
               fontWeight: FontWeight.w600,
-              fontSize: 64),
+              fontSize: 60),
         ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -26,17 +27,19 @@ class AppLogoText extends StatelessWidget {
             Text(
               "ap",
               style: TextStyle(
+                  height: 1,
                   fontFamily: 'Comfortaa',
                   fontWeight: FontWeight.w600,
-                  fontSize: 64),
+                  fontSize: 60),
             ),
             Text(
               'p',
               style: TextStyle(
+                  height: 1,
                   fontFamily: 'Comfortaa',
                   fontWeight: FontWeight.w600,
                   color: ColorsUtil.violetColor,
-                  fontSize: 64),
+                  fontSize: 60),
             )
           ],
         )
