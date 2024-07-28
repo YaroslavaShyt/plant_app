@@ -48,6 +48,9 @@ dependencies:
   dotenv: ^4.2.0
   flutter_dotenv: ^5.1.0
 
+  #localization
+  easy_localization: ^3.0.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -70,6 +73,7 @@ flutter:
   assets:
     - assets/secure_data/.env
     - assets/images/
+    - assets/translations/
     - assets/fonts/comfortaa/
 
   # An image asset can refer to one or more resolution-specific "variants", see

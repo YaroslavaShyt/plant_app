@@ -1,0 +1,12 @@
+{
+  "start": "Розпочати",
+  "noInternetRequiredSentence": "Застосунок не потребує доступу в Інтернет, оскільки всі дані зберігаються локально.",
+  "createPasswordOpportunitySentence": "Проте Plant App пропонує створити пароль, аби захистити Ваші дані від локальних впливів.",
+  "wantToCreatePassword": "Хочу створити пароль",
+  "startWithoutPassword": "Розпочати без пароля",
+  "passwordCreation": "Створення пароля",
+  "password": "Пароль",
+  "repeatPassword": "Повторити пароль",
+  "confirm": "Підтвердити",
+  "back": "Назад"
+}
