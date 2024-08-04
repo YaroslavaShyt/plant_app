@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:plant_app/app/routing/app_router.dart';
-import 'package:plant_app/app/screens/authentication/presentation/screens/auth_screen.dart';
-import 'package:plant_app/app/screens/home/home_screen.dart';
+import 'package:plant_app/app/screens/authentication/presentation/screens/auth_factory.dart';
 import 'package:plant_app/domain/inavigation_util.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class PlantApp extends StatelessWidget {
   const PlantApp({
@@ -21,14 +21,19 @@ class PlantApp extends StatelessWidget {
         title: 'Plant App',
         navigatorKey: navigationUtil.navigatorKey,
         onGenerateRoute: appRouter.onGenerateRoute,
-        localizationsDelegates: context.localizationDelegates,
+        localizationsDelegates: [
+          ...context.localizationDelegates,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
         ),
-        home: const AuthScreen() //HomeScreen(),
+        home: AuthFactory.build() //HomeScreen(),
         );
   }
 }

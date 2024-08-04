@@ -13,10 +13,11 @@ void main() async {
   await initDIComponents();
   runApp(EasyLocalization(
     supportedLocales: const [
-      Locale('ua', 'UK'),
+      Locale('uk', 'UA'),
     ],
     path: 'assets/translations',
-    fallbackLocale: const Locale('ua', 'UK'),
+    
+    fallbackLocale: const Locale('uk', 'UA'),
     child: PlantApp(
       appRouter: appRouter,
       navigationUtil: diManager.get<INavigationUtil>(),

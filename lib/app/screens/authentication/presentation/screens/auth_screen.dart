@@ -1,17 +1,27 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plant_app/app/core/constants/constants.dart';
 import 'package:plant_app/app/core/widgets/app_logo_text.dart';
 import 'package:plant_app/app/core/widgets/main_elevated_button.dart';
 import 'package:plant_app/app/core/widgets/version.dart';
+import 'package:plant_app/app/screens/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:plant_app/app/screens/authentication/presentation/bloc/auth_event.dart';
+import 'package:plant_app/app/screens/authentication/presentation/bloc/auth_state.dart';
 import 'package:plant_app/app/screens/authentication/presentation/widgets/animated_container_constraints.dart';
+import 'package:plant_app/app/screens/authentication/presentation/widgets/back_widget.dart';
+import 'package:plant_app/app/screens/authentication/presentation/widgets/login_form.dart';
+import 'package:plant_app/app/screens/authentication/presentation/widgets/sign_up_form.dart';
 import 'package:plant_app/app/utils/colors_util.dart';
 import 'package:plant_app/app/utils/images_factory.dart';
 
-enum _AuthSteps { initial, password, createPassword }
-
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+  const AuthScreen({
+    required this.bloc,
+    super.key,
+  });
+
+  final AuthBloc bloc;
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -19,149 +29,180 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen>
     with SingleTickerProviderStateMixin {
-  double _containerHeight = AnimatedContainerConstraints.containerHeightFirst;
-  double _containerBorderRadius =
-      AnimatedContainerConstraints.containerBorderRadiusFirst;
-  _AuthSteps _step = _AuthSteps.initial;
+  TextEditingController? _emailTextController;
+  TextEditingController? _passwordTextController;
+  TextEditingController? _confirmPasswordTextController;
 
   @override
   void initState() {
     super.initState();
+    _emailTextController = TextEditingController();
+    _passwordTextController = TextEditingController();
+    _confirmPasswordTextController = TextEditingController();
   }
 
-  void _onStartPressed() {
-    setState(() {
-      _containerHeight = AnimatedContainerConstraints.containerHeightSecond;
-      _containerBorderRadius =
-          AnimatedContainerConstraints.containerBorderRadiusSecond;
-      _step = _AuthSteps.password;
-    });
-  }
-
-  void _onStartWithPasswordPressed() {
-    setState(() {
-      _containerHeight = AnimatedContainerConstraints.containerHeightThird;
-      _containerBorderRadius =
-          AnimatedContainerConstraints.containerBorderRadiusThird;
-      _step = _AuthSteps.createPassword;
-    });
-  }
-
-  void _onPressed() {
-    _step == _AuthSteps.initial
-        ? _onStartPressed()
-        : _step == _AuthSteps.password
-            ? _onStartWithPasswordPressed()
-            : _onStartPressed();
+  @override
+  void dispose() {
+    _emailTextController?.dispose();
+    _passwordTextController?.dispose();
+    _confirmPasswordTextController?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SizedBox(
-            height: double.infinity,
-            child: Image.asset(
-              ImagesFactory.startPage,
-              fit: BoxFit.fitHeight,
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: AnimatedContainer(
-              decoration: BoxDecoration(
-                  color: ColorsUtil.snowWhiteColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(_containerBorderRadius),
-                    topRight: Radius.circular(_containerBorderRadius),
-                  )),
-              curve: Curves.bounceOut,
-              duration: AnimationConstants.defaultAnimationDuration,
-              height: _containerHeight,
-              child: Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      const AppLogoText(),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      if (_step == _AuthSteps.initial)
-                        MainElevatedButton(
-                          width: 150,
-                          height: 44,
-                          onPressed: _onPressed,
-                          title: "start".tr().toString(),
-                        ),
-                      if (_step == _AuthSteps.password) ...[
-                        Padding(
-                          padding: const EdgeInsetsDirectional.symmetric(
-                              horizontal: 48),
-                          child: _buildTexts(),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        MainElevatedButton(
-                          width: 190,
-                          onPressed: _onPressed,
-                          title: "wantToCreatePassword".tr().toString(),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        MainElevatedButton(
-                          width: 190,
-                          onPressed: _onPressed,
-                          title: "startWithoutPassword".tr().toString(),
-                        ),
-                      ]
-                    ],
-                  ),
-                ),
+      body: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+        return Stack(
+          children: [
+            SizedBox(
+              height: double.infinity,
+              child: Image.asset(
+                ImagesFactory.startPage,
+                fit: BoxFit.fitHeight,
               ),
             ),
-          ),
-          const Positioned(
-            bottom: 10,
-            left: 0,
-            right: 0,
-            child: Align(
-              alignment: Alignment.center,
-              child: VersionWidget(),
+            Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: AnimatedContainer(
+                  decoration: BoxDecoration(
+                      color: ColorsUtil.snowWhiteColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(containerBorderRadius),
+                        topRight: Radius.circular(containerBorderRadius),
+                      )),
+                  curve: Curves.bounceOut,
+                  duration: AnimationConstants.defaultAnimationDuration,
+                  height: containerHeight,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        if (state.userAuthState == UserAuthStates.start)
+                          _buildStartStateUI(),
+                        if (state.userAuthState ==
+                            UserAuthStates.chooseLoginOrRegister)
+                          _buildChooseLoginOrRegisterStateUI(),
+                        if (state.userAuthState == UserAuthStates.login)
+                          _buildLoginForm(),
+                        if (state.userAuthState == UserAuthStates.registration)
+                          _buildSignUpForm()
+                      ],
+                    ),
+                  ),
+                )),
+            if (state.userAuthState != UserAuthStates.start)
+              Positioned(
+                  left: 10,
+                  bottom: 10,
+                  child: BackWidget(
+                      onTap: () => widget.bloc.add(AuthEvent(
+                          userAuthEvent:
+                              state.userAuthState == UserAuthStates.login ||
+                                      state.userAuthState ==
+                                          UserAuthStates.registration
+                                  ? UserAuthEvents.start
+                                  : UserAuthEvents.initial)))),
+            const Positioned(
+              bottom: 10,
+              left: 0,
+              right: 0,
+              child: Align(
+                alignment: Alignment.center,
+                child: VersionWidget(),
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 
-  Widget _buildTexts() {
+  Widget _buildStartStateUI() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text("noInternetRequiredSentence".tr().toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontFamily: 'Comfortaa',
-                fontSize: 14,
-                color: ColorsUtil.brownText)),
+        const SizedBox(
+          height: 40,
+        ),
+        const AppLogoText(),
+        const SizedBox(
+          height: 40,
+        ),
+        MainElevatedButton(
+          width: 200,
+          height: 44,
+          onPressed: () => widget.bloc.add(const AuthEvent(
+            userAuthEvent: UserAuthEvents.start,
+          )),
+          title: "start".tr().toString(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildChooseLoginOrRegisterStateUI() {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 40,
+        ),
+        const AppLogoText(),
+        const SizedBox(
+          height: 40,
+        ),
         const SizedBox(
           height: 10,
         ),
-        Text("createPasswordOpportunitySentence".tr().toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontFamily: 'Comfortaa',
-                fontSize: 14,
-                color: ColorsUtil.brownText)),
+        MainElevatedButton(
+          width: 200,
+          onPressed: () => widget.bloc.add(const AuthEvent(
+            userAuthEvent: UserAuthEvents.login,
+          )),
+          title: "login".tr().toString(),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        MainElevatedButton(
+          width: 200,
+          onPressed: () => widget.bloc.add(const AuthEvent(
+            userAuthEvent: UserAuthEvents.registration,
+          )),
+          title: "signup".tr().toString(),
+        ),
       ],
+    );
+  }
+
+  double get containerHeight => switch (widget.bloc.state.userAuthState) {
+        UserAuthStates.start =>
+          AnimatedContainerConstraints.containerHeightFirst,
+        UserAuthStates.chooseLoginOrRegister =>
+          AnimatedContainerConstraints.containerHeightSecond,
+        _ => AnimatedContainerConstraints.containerHeightThird,
+      };
+
+  double get containerBorderRadius => switch (widget.bloc.state.userAuthState) {
+        UserAuthStates.start =>
+          AnimatedContainerConstraints.containerBorderRadiusFirst,
+        _ => AnimatedContainerConstraints.containerBorderRadiusSecond,
+      };
+
+  Widget _buildLoginForm() {
+    return LoginForm(
+      onLoginPressed: widget.bloc.navigateToHome,
+      emailTextController: _emailTextController!,
+      passwordTextController: _passwordTextController!,
+    );
+  }
+
+  Widget _buildSignUpForm() {
+    return SignUpForm(
+      onSignUpPressed: widget.bloc.navigateToHome,
+      emailTextController: _emailTextController!,
+      passwordTextController: _passwordTextController!,
+      confirmPasswordTextController: _confirmPasswordTextController!,
     );
   }
 }

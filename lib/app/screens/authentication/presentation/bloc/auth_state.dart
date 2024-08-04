@@ -1,16 +1,31 @@
 import 'package:equatable/equatable.dart';
 
-enum UserAuthStates { authenticated, notAuthenticated }
+enum UserAuthStates {
+  start,
+  chooseLoginOrRegister,
+  login,
+  loginSuccess,
+  loginFailure,
+  registration,
+  registrationSuccess,
+  registrationFailure,
+}
 
 class AuthState extends Equatable {
-  const AuthState({this.userAuthState = UserAuthStates.notAuthenticated});
+  const AuthState({
+    this.userAuthState = UserAuthStates.start,
+  });
 
   final UserAuthStates userAuthState;
 
-  AuthState copyWith({UserAuthStates? userAuthState}) {
-    return AuthState(userAuthState: userAuthState ?? this.userAuthState);
+  AuthState copyWith({
+    UserAuthStates? userAuthState,
+  }) {
+    return AuthState(
+      userAuthState: userAuthState ?? this.userAuthState,
+    );
   }
 
   @override
-  List get props => [];
+  List get props => [userAuthState];
 }

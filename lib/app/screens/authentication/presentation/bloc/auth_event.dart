@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum UserAuthEvents { login, registration }
+enum UserAuthEvents {initial, start, login, registration }
 
 class AuthEvent extends Equatable {
   const AuthEvent({this.userAuthEvent});

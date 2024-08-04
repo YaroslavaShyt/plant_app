@@ -1,3 +1,3 @@
 class AnimationConstants {
-  static const Duration defaultAnimationDuration = Duration(seconds: 2);
+  static const Duration defaultAnimationDuration = Duration(seconds: 1);
 }

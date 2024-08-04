@@ -8,5 +8,11 @@
   "password": "Пароль",
   "repeatPassword": "Повторити пароль",
   "confirm": "Підтвердити",
-  "back": "Назад"
+  "back": "Назад",
+  "login": "Здійснити вхід",
+  "signup": "Зареєструватись",
+  "createAccount": "Створити акаунт",
+  "email": "Email",
+  "Login": "Вхід",
+  "SignUp": "Реєстрація"
 }
