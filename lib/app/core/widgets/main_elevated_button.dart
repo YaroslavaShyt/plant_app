@@ -9,9 +9,11 @@ class MainElevatedButton extends StatelessWidget {
     this.height = 48,
     this.width = 218,
     this.borderRadius = 20.0,
+    this.icon,
   });
 
   final VoidCallback onPressed;
+  final Icon? icon;
   final String title;
   final double height;
   final double width;
@@ -30,14 +32,20 @@ class MainElevatedButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
           ),
         ),
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontFamily: 'Comfortaa',
-            fontSize: 13,
-            color: ColorsUtil.snowWhiteColor,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            if (icon != null) icon!,
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: 'Comfortaa',
+                fontSize: 13,
+                color: ColorsUtil.snowWhiteColor,
+              ),
+            ),
+          ],
         ),
       ),
     );

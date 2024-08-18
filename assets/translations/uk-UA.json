@@ -14,5 +14,13 @@
   "createAccount": "Створити акаунт",
   "email": "Email",
   "Login": "Вхід",
-  "SignUp": "Реєстрація"
+  "SignUp": "Реєстрація",
+  "myCollections": "Мої колекції",
+  "createACollection": "Створити колекцію",
+  "statistics": "Статистика",
+  "thisMonth": "Цього місяця",
+  "added": "Додано",
+  "sold": "Продано",
+  "lost": "Втрачено",
+  "menu": "Меню"
 }
