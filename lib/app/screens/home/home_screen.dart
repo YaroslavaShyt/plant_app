@@ -2,13 +2,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:plant_app/app/core/widgets/app_logo_text_line.dart';
 import 'package:plant_app/app/core/widgets/main_elevated_button.dart';
+import 'package:plant_app/app/screens/home/bloc/home_cubit.dart';
 import 'package:plant_app/app/screens/home/widgets/collections_carousel_widget.dart';
 import 'package:plant_app/app/screens/home/widgets/main_drawer/main_drawer.dart';
 import 'package:plant_app/app/screens/home/widgets/statistics/statistics_carousel_widget.dart';
 import 'package:plant_app/app/utils/colors_util.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({
+    required this.homeCubit,
+    super.key,});
+
+  final HomeCubit homeCubit;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -21,7 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: const MainDrawer(),
+      endDrawer: MainDrawer(
+        onMyCollectionsPressed: widget.homeCubit.onMyCollectionsPressed,
+      ),
       body: SingleChildScrollView(
           child: Padding(
         padding: const EdgeInsetsDirectional.all(20.0),

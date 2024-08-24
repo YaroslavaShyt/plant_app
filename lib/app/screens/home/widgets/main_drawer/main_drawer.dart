@@ -4,7 +4,12 @@ import 'package:plant_app/app/screens/home/widgets/main_drawer/drawer_item.dart'
 import 'package:plant_app/app/utils/colors_util.dart';
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({super.key});
+  const MainDrawer({
+    required this.onMyCollectionsPressed,
+    super.key,
+  });
+
+  final VoidCallback onMyCollectionsPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class MainDrawer extends StatelessWidget {
               height: 120,
               margin: const EdgeInsets.all(0),
               padding: const EdgeInsets.all(0),
-              decoration:  const BoxDecoration(
+              decoration: const BoxDecoration(
                 color: ColorsUtil.snowWhiteColor,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
@@ -33,7 +38,7 @@ class MainDrawer extends StatelessWidget {
                 MainDrawerItem(
                   icon: Icons.menu,
                   label: "myCollections",
-                  onTap: () {},
+                  onTap: onMyCollectionsPressed,
                 ),
                 MainDrawerItem(
                   icon: Icons.question_mark_rounded,
